@@ -1,0 +1,30 @@
+.main{
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .hide{
+    display: none;
+  }
+  .icon{
+    img{
+      display: block;
+      height: 60px;
+      width: 60px;
+      object-fit: cover;
+    }
+  }
+  .title{
+    // flex: 1;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    span{
+ font-size: 20px;
+    font-weight: 600;
+    color: white;
+    }
+
+  }
+}
