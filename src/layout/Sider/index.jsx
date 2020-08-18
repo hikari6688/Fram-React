@@ -1,49 +1,90 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import style from './sider.module.scss';
+import { Link } from 'react-router-dom';
 import { Menu, Button } from 'antd';
 import { SIDEBAR_WIDTH } from '../../consts/style';
-import { AppstoreOutlined, MenuUnfoldOutlined, MenuFoldOutlined, PieChartOutlined, DesktopOutlined, ContainerOutlined, MailOutlined } from '@ant-design/icons';
+import * as Icons from '@ant-design/icons';
 import { commonStore } from '../../store/common.store';
 import { asyncRoutes } from '../../store/router.store';
-import { IMenu } from '../../components/Menu/index'
 import { Title } from './Title/index';
+import { useLocation } from 'react-router-dom';
 import { observer } from 'mobx-react';
+import { toJS } from 'mobx';
 const { SubMenu } = Menu;
-
+const MenuItem = Menu.Item;
 export const Sider = observer(() => {
+  const makeMenuTree = function (menu) {
+    if (!menu || !Array.isArray(menu) || !menu.length) {
+      return null;
+    }
+    return menu.map((root) => {
+      if (root.children) {
+        return (
+          <SubMenu
+            key={root.path}
+            title={
+              <span>
+                {root.icon && React.createElement(Icons[root.icon])}
+                <span>{root.title}</span>
+              </span>
+            }
+          >
+            {makeMenuTree(root.children)}
+          </SubMenu>
+        );
+      }
+      return (
+        <MenuItem key={root.path}>
+          <Link to={root.path}>
+            {root.icon && React.createElement(Icons[root.icon])}
+            <span>{root.title}</span>
+          </Link>
+        </MenuItem>
+      );
+    });
+  };
+  //处理菜单的激活项和展开项
+  const getParentByPath = (path, routes) => {
+    let parent = {};
+    routes.forEach((item) => {
+      if (item.path != path && item.children) {
+        item.children.forEach((_item) => {
+          if (_item.path == path) {
+            parent = item;
+          }
+        });
+      }
+    });
+    return parent;
+  };
+  const location = useLocation();
+  const [active, setActive] = useState([location.pathname]);
+  const [opened, setOpened] = useState([]);
+  useEffect(() => {
+    if (asyncRoutes.routes.length) {
+      const parent = getParentByPath(location.pathname, asyncRoutes.routes);
+      setOpened([parent.path] || []);
+    }
+  }, [asyncRoutes.routes]);
+
   return (
     <div className={style.side} style={{ width: commonStore.isCollapsed ? SIDEBAR_WIDTH[1] : SIDEBAR_WIDTH[0] }}>
-      {/* <Button type="primary" onClick={ (e)=>toggleCollapsed({isCollapsed:!collapse.isCollapsed }) } style={{ marginBottom: 16 }}>
-        {React.createElement(collapse.isCollapsed ? MenuUnfoldOutlined : MenuFoldOutlined)}
-      </Button> */}
       <Title />
-      <Menu defaultSelectedKeys={['1']} defaultOpenKeys={['sub1']} mode="inline" theme="dark" inlineCollapsed={commonStore.isCollapsed}>
-        <Menu.Item key="1" icon={<PieChartOutlined />}>
-          Option 1
-        </Menu.Item>
-        {/* <IMenu/> */}
-        <Menu.Item key="2" icon={<DesktopOutlined />}>
-          Option 2
-        </Menu.Item>
-        <Menu.Item key="3" icon={<ContainerOutlined />}>
-          Option 3
-        </Menu.Item>
-        <SubMenu key="sub1" icon={<MailOutlined />} title="Navigation One">
-          <Menu.Item key="5">Option 5</Menu.Item>
-          <Menu.Item key="6">Option 6</Menu.Item>
-          <Menu.Item key="7">Option 7</Menu.Item>
-          <Menu.Item key="8">Option 8</Menu.Item>
-        </SubMenu>
-        <SubMenu key="sub2" icon={<AppstoreOutlined />} title="Navigation Two">
-          <Menu.Item key="9">Option 9</Menu.Item>
-          <Menu.Item key="10">Option 10</Menu.Item>
-          <SubMenu key="sub3" title="Submenu">
-            <Menu.Item key="11">Option 11</Menu.Item>
-            <Menu.Item key="12">Option 12</Menu.Item>
-          </SubMenu>
-        </SubMenu>
+      <Menu
+        onOpenChange={(e) => {
+          setOpened(e);
+        }}
+        onClick={(e) => {
+          setActive(e.key);
+        }}
+        selectedKeys={active}
+        openKeys={opened}
+        mode="inline"
+        theme="dark"
+        inlineCollapsed={commonStore.isCollapsed}
+      >
+        {makeMenuTree(asyncRoutes.routes)}
       </Menu>
     </div>
   );
 });
-// export const Sider=observe(_Sider)

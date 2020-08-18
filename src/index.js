@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 // import App from 'app';
-import  {RouterMap}  from './router/inject'; 
+import  {RouterMap}  from './router'; 
 import * as serviceWorker from './serviceWorker';
 import { ConfigProvider } from 'antd';
 import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'

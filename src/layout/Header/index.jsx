@@ -3,14 +3,18 @@ import style from './header.module.scss';
 import { commonStore } from '../../store/common.store.js';
 import { Button, Dropdown, Menu } from 'antd';
 import { observer } from 'mobx-react';
+import { useHistory } from 'react-router-dom';
 import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
 import avatar from '../../assets/images/kotori.jpg';
 export const Header = observer(() => {
+  const history = useHistory();
   const toggleCollapsed = () => {
-    commonStore.changeCollapsed();
+    commonStore.setCollapsed();
   };
   const logout = () => {
-    console.log('退出登陆');
+    setTimeout(() => {
+      history.push('/login');
+    }, 1000);
   };
   const menu = (
     <Menu>

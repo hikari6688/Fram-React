@@ -1,33 +1,28 @@
 import { observable, action } from 'mobx';
+import { asyncRoutes as _asyncRoutes } from '../router/module.router';
 
 class AsyncRoutes {
   @observable
-  routes = [
-    {
-      name: 'App',
-      component: App,
-      path: '/',
-      exact: true,
-      redirect:'/system',
-      children: [
-        {
-          title: '系统设置',
-          path: 'system',
-          name: 'system',
-          component: 'System',
-        },
-        {
-          title: '机构管理',
-          path: 'org',
-          name: 'org',
-          component: 'Org',
-        },
-      ],
-    },
-  ];
+  routes = [];
+  @action
+  getRoutes() {
+    return new Promise((_resolve, _reject) => {
+      function fetchRoutes() {
+        return new Promise((resolve, reject) => {
+          const res = _asyncRoutes;
+          resolve(res);
+        });
+      }
+      fetchRoutes().then((res) => {
+        this.setRoutes(res);
+        _resolve()
+      });
+    });
+  }
   @action
   setRoutes(routes) {
     this.routes = routes;
+    console.log(this.routes);
   }
 }
 export const asyncRoutes = new AsyncRoutes();

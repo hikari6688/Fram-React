@@ -1,10 +1,10 @@
-// //路由映射
-// import { Layout } from '../layout/index'
-// import { Class } from '../views/class/index'
-// import { System }  from '../views/system/index'
-
-// export const ComponentsMap={
-//   Layout:Layout,
-//   Class:Class,
-//   System:System,
-// }
+import { System } from '../views/system/index';
+import { Role } from '../views/auth/role/index';
+import { Org } from '../views/auth/org/index';
+import { App } from '../views/app/index'
+export const ComponentsMap = {
+  System: System,
+  Org: Org,
+  Role: Role,
+  App:App
+};
