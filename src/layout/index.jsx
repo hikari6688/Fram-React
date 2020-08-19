@@ -16,9 +16,9 @@ export const Layout = () => {
           <Header />
         </div>
         <div className={style.main}>
-          {/* <div className={style.crumb}>
+          <div className={style.crumb}>
             <Crumb></Crumb>
-          </div> */}
+          </div>
           <Main />
         </div>
       </div>

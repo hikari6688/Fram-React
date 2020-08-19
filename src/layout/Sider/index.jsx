@@ -10,6 +10,7 @@ import { Title } from './Title/index';
 import { useLocation } from 'react-router-dom';
 import { observer } from 'mobx-react';
 import { toJS } from 'mobx';
+import { getMapByPath } from '../../utils/methods'
 const { SubMenu } = Menu;
 const MenuItem = Menu.Item;
 export const Sider = observer(() => {
@@ -43,27 +44,14 @@ export const Sider = observer(() => {
       );
     });
   };
-  //处理菜单的激活项和展开项
-  const getParentByPath = (path, routes) => {
-    let parent = {};
-    routes.forEach((item) => {
-      if (item.path != path && item.children) {
-        item.children.forEach((_item) => {
-          if (_item.path == path) {
-            parent = item;
-          }
-        });
-      }
-    });
-    return parent;
-  };
+  
   const location = useLocation();
   const [active, setActive] = useState([location.pathname]);
   const [opened, setOpened] = useState([]);
   useEffect(() => {
     if (asyncRoutes.routes.length) {
-      const parent = getParentByPath(location.pathname, asyncRoutes.routes);
-      setOpened([parent.path] || []);
+      const parent = getMapByPath(asyncRoutes.routes, location.pathname)[0] || {};
+      setOpened([parent.path]);
     }
   }, [asyncRoutes.routes]);
 
