@@ -21,7 +21,11 @@
       flex: 1;
       height: 100%;
       background-color:#F0F2F5;
+      // padding: 10px 28px 28px 28px;
       padding: 20px;
+      .crumb{
+        padding-bottom: 10px;
+      }
     }
   }
 }

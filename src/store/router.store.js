@@ -22,7 +22,6 @@ class AsyncRoutes {
   @action
   setRoutes(routes) {
     this.routes = routes;
-    console.log(this.routes);
   }
 }
 export const asyncRoutes = new AsyncRoutes();

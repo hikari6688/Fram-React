@@ -4,12 +4,6 @@ import { asyncRoutes } from '../store/router.store'
 import { Layout } from '../layout/index';
 import { Login } from '../views/login/index'
 export const RouterMap = () => {
-  useEffect(() => {
-    if(!asyncRoutes.routes.length){
-      //拉取路由
-      asyncRoutes.getRoutes();
-    }
-  });
   return (
     <Router>
       <Switch>

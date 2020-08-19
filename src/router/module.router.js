@@ -3,16 +3,15 @@ export const asyncRoutes = [
     title: '系统设置',
     path: '/system',
     name: 'system',
-    component: 'System',
+    exact: false,
     icon: 'TwitterOutlined',
-    children: [{ title: '应用管理', path: '/system/app', name: 'app', icon: 'GitlabOutlined', component: 'Class' }],
+    children: [{ title: '应用管理', path: '/system/app', name: 'app', icon: 'GitlabOutlined', component: 'App' }],
   },
   {
     title: '权限管理',
     path: '/auth',
     name: 'auth',
-    // component: 'Auth',
-    // redirect:
+    exact: false,
     icon: 'RedditOutlined',
     children: [
       { title: '机构管理', exact: true, path: '/auth/org', name: 'org', icon: 'GitlabOutlined', component: 'Org' },

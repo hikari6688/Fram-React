@@ -1,35 +1,14 @@
 import React from 'react';
 import { asyncRoutes } from '../../store/router.store'
+import { asyncRoutes as _asyncRoutes } from '../../router/module.router'
 import { useHistory } from 'react-router-dom'
 export const Login = () => {
   const history=useHistory();
   const login = () => {
     setTimeout(() => {
-      const res = [
-        {
-          name: 'App',
-          component: 'App',
-          path: '/',
-          exact: true,
-          redirect: '/system',
-          children: [
-            {
-              title: '系统设置',
-              path: 'system',
-              name: 'system',
-              component: 'System',
-            },
-            {
-              title: '机构管理',
-              path: 'org',
-              name: 'org',
-              component: 'Org',
-            },
-          ],
-        },
-      ];
-      asyncRoutes.setRoutes(res[0].children);
-      history.push('/system');
+      const res = _asyncRoutes;
+      asyncRoutes.setRoutes(res);
+      history.push('/system/app');
     }, 1000);
   };
   return (
