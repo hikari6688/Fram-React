@@ -9,10 +9,12 @@ export const RouterMaker = (_routes) => {
     return routes.map((i) => {
       if (i.children) {
         return makeRoutes(i.children);
+        //  return <Route key={i.name} path={i.path} exact={i.exact} component={ComponentsMap[i.component]} />;
       }
       return <Route key={i.name} path={i.path} exact={i.exact} component={ComponentsMap[i.component]} />;
     });
   };
   const routerMap=makeRoutes(_routes)
+  console.log(routerMap)
   return routerMap
 };

@@ -8,7 +8,9 @@ export const RouterMap = () => {
     <Router>
       <Switch>
         <Route path="/login" exact  component={ Login }/>
+
         <Route path="/"  component={ Layout }/>
+        
       </Switch>
     </Router>
   );

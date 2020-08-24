@@ -5,7 +5,7 @@ export const asyncRoutes = [
     name: 'system',
     exact: false,
     icon: 'TwitterOutlined',
-    children: [{ title: '应用管理', path: '/system/app', name: 'app', icon: 'GitlabOutlined', component: 'App' }],
+    children: [{ title: '应用管理', path: '/system/app', name: 'app', icon: 'GitlabOutlined', component: 'App', showMenu: true }],
   },
   {
     title: '权限管理',
@@ -14,8 +14,20 @@ export const asyncRoutes = [
     exact: false,
     icon: 'RedditOutlined',
     children: [
-      { title: '机构管理', exact: true, path: '/auth/org', name: 'org', icon: 'GitlabOutlined', component: 'Org' },
-      { title: '角色管理', exact: true, path: '/auth/role', name: 'role', icon: 'GitlabOutlined', component: 'Role' },
+      {
+        title: '机构管理',
+        exact: false,
+        path: '/auth/org/list',
+        name: 'org',
+        showMenu: true,
+        icon: 'GitlabOutlined',
+        children: [
+          { title: '机构列表',exact: true, showMenu: false, path: '/auth/org/list', name: 'orgList', icon: 'gitlaboutlined', component: 'OrgList' }, 
+          { title: '添加机构',exact: true, showMenu: false, path: '/auth/org/add', name: 'orgAdd', icon: 'gitlaboutlined', component: 'OrgAdd' },
+          { title: '修改机构',exact: true, showMenu: false, path: '/auth/org/update', name: 'orgUpdate', icon: 'gitlaboutlined', component: 'OrgUpdate' },
+        ],
+      },
+      // { title: '角色管理', showMenu: true, hideMenu: true, exact: true, path: '/auth/role', name: 'role', icon: 'GitlabOutlined', component: 'Role' },
     ],
   },
 ];

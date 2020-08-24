@@ -10,7 +10,7 @@ import { Title } from './Title/index';
 import { useLocation } from 'react-router-dom';
 import { observer } from 'mobx-react';
 import { toJS } from 'mobx';
-import { getMapByPath } from '../../utils/methods'
+import { getMapByPath, showedItem,getRouteByPath } from '../../utils/methods';
 const { SubMenu } = Menu;
 const MenuItem = Menu.Item;
 export const Sider = observer(() => {
@@ -20,37 +20,49 @@ export const Sider = observer(() => {
     }
     return menu.map((root) => {
       if (root.children) {
-        return (
-          <SubMenu
-            key={root.path}
-            title={
-              <span>
-                {root.icon && React.createElement(Icons[root.icon])}
-                <span>{root.title}</span>
-              </span>
-            }
-          >
-            {makeMenuTree(root.children)}
-          </SubMenu>
-        );
+        const r = showedItem(root.children);
+        if (r&&r.length) {
+          return (
+            <SubMenu
+              key={root.path}
+              title={
+                <span>
+                  {root.icon && React.createElement(Icons[root.icon])}
+                  <span>{root.title}</span>
+                </span>
+              }
+            >
+              {makeMenuTree(r)}
+            </SubMenu>
+          );
+        } else {
+          <MenuItem key={root.name}>
+            <Link to={root.path}>
+              {root.icon && React.createElement(Icons[root.icon])}
+              <span>{root.title}</span>
+            </Link>
+          </MenuItem>;
+        }
       }
       return (
-        <MenuItem key={root.path}>
+        <MenuItem key={root.name}>
           <Link to={root.path}>
-            {root.icon && React.createElement(Icons[root.icon])}
+            {/* {root.icon && React.createElement(Icons[root.icon])} */}
             <span>{root.title}</span>
           </Link>
         </MenuItem>
       );
     });
   };
-  
+
   const location = useLocation();
-  const [active, setActive] = useState([location.pathname]);
+  const [active, setActive] = useState([]);
   const [opened, setOpened] = useState([]);
   useEffect(() => {
     if (asyncRoutes.routes.length) {
       const parent = getMapByPath(asyncRoutes.routes, location.pathname)[0] || {};
+      const current=getRouteByPath(asyncRoutes.routes, location.pathname)
+      setActive(current.name)
       setOpened([parent.path]);
     }
   }, [asyncRoutes.routes]);
